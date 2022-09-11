@@ -45,9 +45,9 @@ jobs:
         run: | 
           which micromamba
           micromamba
-      # - name: Debug point
-      #   uses: mxschmitt/action-tmate@v3
-      #   if: always()
+      - name: Debug point
+        uses: mxschmitt/action-tmate@v3
+        if: always()
       - name: Remove micromamba from PATH
         run: |
           export PATH=${PATH/':/home/runner/.local/bin'/}
