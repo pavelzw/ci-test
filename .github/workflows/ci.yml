@@ -1,0 +1,40 @@
+name: bashrc bash_profile
+
+on:
+  push:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  test_micro_mamba_pm:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {os: ubuntu-latest, shell: bash, shell-source-param: -i}
+          - {os: ubuntu-latest, shell: bash, shell-source-param: -li}
+          - {os: ubuntu-latest, shell: bash, shell-source-param: -l}
+          - {os: ubuntu-latest, shell: bash, shell-source-param: ''}
+    steps:
+      - name: Install Micromamba (${{ matrix.os }}, ${{ matrix.shell }})
+        run: |
+          echo "echo bashrc" > ~/.bashrc
+          echo "echo bash_profile" > ~/.bash_profile
+      - name: Test shell
+        run: echo Hello World {0}
+        shell: bash {0}
+      - name: Test shell
+        run: echo Hello World
+        shell: bash
+      - name: Test shell
+        run: echo Hello World -l
+        shell: bash -l {0}
+      - name: Test shell
+        run: echo Hello World -i
+        shell: bash -i {0}
+      - name: Test shell
+        run: echo Hello World -il
+        shell: bash -il {0}
