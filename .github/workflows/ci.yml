@@ -1,0 +1,14 @@
+on:
+  push:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  test_micro_mamba_pm:
+    runs-on: macos-latest
+    steps:
+      - name: Test gsed
+        run: |
+          gsed --help
