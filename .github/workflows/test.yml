@@ -7,8 +7,10 @@ jobs:
       - run: |
           echo "This is a regular message"
           echo "::debug::This is a debug message"
-          echo "::notice file={.github/workflows},line={10},endline={10},title={Custom title}::This is a notice message"
-          echo "::warning file={.github/workflows},line={11},endline={11},title={Custom title}::This is a warning message"
-          echo "::error file={.github/workflows},line={12},endline={12},title={Custom title}::This is an error message"
-          echo "::group::This is a group::endgroup::"
-          echo "This is masked: ::add-mask::1234567890"
+          echo "::notice file=.github/workflows,line=10,col=17,endCol=96,title=Custom title::This is a notice message"
+          echo "::warning file=.github/workflows,line=11,title=Custom title::This is a warning message"
+          echo "::error file=.github/workflows,line=12,endLine=13,title=Custom title::This is an error message"
+          echo "::group::This is a group"
+          ::add-mask::1234567890
+          echo "This is masked: 1234567890"
+          echo "::endgroup::"
