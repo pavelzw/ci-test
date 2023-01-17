@@ -14,5 +14,5 @@ jobs:
           echo "::warning file=.github/workflows,line=11,title=Custom title::This is a warning message"
           echo "::error file=.github/workflows,line=12,endLine=13,title=Custom title::This is an error message"
           echo "::group::This is a group"
-          echo "This is masked: $SECRET"
+          echo "This is masked: 1234567890"
           echo "::endgroup::"
