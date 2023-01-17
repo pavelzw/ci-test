@@ -4,6 +4,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      # - run: echo "::add-mask::$SECRET"
+      #   env:
+      #     SECRET: ${{ secrets.SECRET }}
       - run: |
           echo "This is a regular message"
           echo "::debug::This is a debug message"
@@ -11,6 +14,5 @@ jobs:
           echo "::warning file=.github/workflows,line=11,title=Custom title::This is a warning message"
           echo "::error file=.github/workflows,line=12,endLine=13,title=Custom title::This is an error message"
           echo "::group::This is a group"
-          ::add-mask::1234567890
-          echo "This is masked: 1234567890"
+          echo "This is masked: ${{ secrets.SECRET }}"
           echo "::endgroup::"
