@@ -19,6 +19,12 @@ jobs:
         with:
           message: "This is a comment on a PR"
           comment_tag: test
+      - name: What does this do?
+        run: echo ${{ github.event.pull_request }}
+      - name: And this (number)?
+        run: echo ${{ github.event.pull_request.number }}
+      - name: And this (merged)?
+        run: echo ${{ github.event.pull_request.merged }}
       - name: Comment on merged PR
         if: github.event.pull_request.merged
         uses: thollander/actions-comment-pull-request@v2
