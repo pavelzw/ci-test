@@ -1,0 +1,28 @@
+name: Benchmark
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - main2
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: "This is a comment on a PR"
+          comment_tag: test
+      - name: Comment on merged PR
+        if: github.event.pull_request.merged
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+            message: "This PR is now merged :rocket:"
+            comment_tag: test
+            pr_number: ${{ github.event.pull_request.number }}
