@@ -18,8 +18,8 @@ jobs:
       - name: bash -el {0}
         shell: bash -el {0}
         run: echo "Hello World"
-      - name: bash -il {0}
-        shell: bash -il {0}
+      - name: bash -ei {0}
+        shell: bash -ei {0}
         run: echo "Hello World"
       - uses: mxschmitt/action-tmate@v3
         if: failure()
