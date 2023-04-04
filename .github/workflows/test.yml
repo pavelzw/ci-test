@@ -14,8 +14,8 @@ jobs:
       - run: cat ~/.bash_profile
         shell: bash
       - run: |
-          echo "echo bashrc" >> ~/.bashrc
-          echo "echo bash_profile" >> ~/.bash_profile
+          echo "\necho bashrc" >> ~/.bashrc
+          echo "\necho bash_profile" >> ~/.bash_profile
       - name: Default
         run: echo "Hello World"
       - name: bash -el {0}
