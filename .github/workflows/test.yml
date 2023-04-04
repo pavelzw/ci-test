@@ -2,6 +2,22 @@ on: push
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
-      - uses: mxschmitt/action-tmate@v3
+      # - uses: mxschmitt/action-tmate@v3
+      - run: cat ~/.bashrc
+      - run: cat ~/.bash_profile
+      - run: |
+          echo "bashrc" >> ~/.bashrc
+          echo "bash_profile" >> ~/.bash_profile
+      - name: Default
+        run: echo "Hello World"
+      - name: bash -el {0}
+        shell: bash -el {0}
+        run: echo "Hello World"
+      - name: bash -il {0}
+        shell: bash -il {0}
+        run: echo "Hello World"
