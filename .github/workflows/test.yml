@@ -5,7 +5,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest]
+        # os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - run: cat ~/.bashrc
@@ -23,5 +24,9 @@ jobs:
       - name: bash -ei {0}
         shell: bash -ei {0}
         run: echo "Hello World"
+      - name: bashrc
+        run: cat ~/.bashrc
+      - name: bash_profile
+        run: cat ~/.bash_profile
       - uses: mxschmitt/action-tmate@v3
         if: failure()
