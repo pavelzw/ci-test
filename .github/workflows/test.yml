@@ -3,16 +3,16 @@ on: push
 jobs:
   test:
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      # - uses: mxschmitt/action-tmate@v3
       - run: cat ~/.bashrc
       - run: cat ~/.bash_profile
       - run: |
-          echo "bashrc" >> ~/.bashrc
-          echo "bash_profile" >> ~/.bash_profile
+          echo "echo bashrc" >> ~/.bashrc
+          echo "echo bash_profile" >> ~/.bash_profile
       - name: Default
         run: echo "Hello World"
       - name: bash -el {0}
@@ -21,3 +21,5 @@ jobs:
       - name: bash -il {0}
         shell: bash -il {0}
         run: echo "Hello World"
+      - uses: mxschmitt/action-tmate@v3
+        if: failure()
