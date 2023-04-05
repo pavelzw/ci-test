@@ -8,3 +8,9 @@ jobs:
           echo "Hello, world!"
         shell: ls -lah {0}
       - run: echo $PATH
+      - run: ls /usr/local/bin
+      - run: ls /usr/local/sbin
+      - run: ls /usr/bin
+      - run: ls /usr/sbin
+      - run: ls /bin
+      - run: ls /sbin
