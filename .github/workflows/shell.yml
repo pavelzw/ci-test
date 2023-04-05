@@ -14,3 +14,19 @@ jobs:
       - run: ls /usr/sbin
       - run: ls /bin
       - run: ls /sbin
+
+  test-win:
+    runs-on: windows-latest
+    steps:
+      - run: |
+          echo "Hello, world!"
+      - run: echo $PATH
+        shell: bash
+      - run: echo %PATH%
+        shell: cmd
+      - run: ls /usr/local/bin
+      - run: ls /usr/local/sbin
+      - run: ls /usr/bin
+      - run: ls /usr/sbin
+      - run: ls /bin
+      - run: ls /sbin
