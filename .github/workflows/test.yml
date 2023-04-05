@@ -10,5 +10,9 @@ jobs:
     steps:
       - run: Write-Host "Hello World"
         shell: pwsh
+      - run: pwsh --version
+        shell: bash
+      - run: powershell --version
+        shell: bash
       - run: Write-Host "Hello World"
         shell: powershell
