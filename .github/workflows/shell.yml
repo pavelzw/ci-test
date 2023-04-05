@@ -7,3 +7,4 @@ jobs:
       - run: |
           echo "Hello, world!"
         shell: ls -lah {0}
+      - run: echo $PATH
