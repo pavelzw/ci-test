@@ -36,6 +36,8 @@ jobs:
           mkdir on-path
           echo "python --version" >> on-path/python-custom
           chmod +x on-path/python-custom
+          echo "python --version" >> /c/aliyun-cli/python-custom2
+          chmod +x /c/aliyun-cli/python-custom2
           echo "C:\Users\runneradmin\on-path" >> $GITHUB_PATH
           echo $GITHUB_PATH
           cat $GITHUB_PATH
@@ -51,10 +53,13 @@ jobs:
       - run: |
           cd C:\Users\runneradmin\on-path
           ls
+      - run: |
+          cd C:\aliyun-cli
+          ls
       # - run: python-custom
       #   shell: bash
       - run: test
-        shell: python-custom
+        shell: python-custom2
       - run: echo "$HOME/.local/bin" >> $GITHUB_PATH
         shell: bash
       - run: cat $GITHUB_PATH
