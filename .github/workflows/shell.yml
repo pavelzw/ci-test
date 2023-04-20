@@ -28,6 +28,10 @@ jobs:
         shell: powershell
       - run: $Env:GITHUB_PATH
         shell: powershell
+      - run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+        shell: bash
+      - run: cat $GITHUB_PATH
+        shell: bash
       # - run: ls /usr/local/bin
       # - run: ls /usr/local/sbin
       # - run: ls /usr/bin
