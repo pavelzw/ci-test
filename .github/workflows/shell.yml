@@ -42,6 +42,8 @@ jobs:
         shell: bash
       - run: ls -lah /d/a/_temp/_runner_file_commands/add_path_*
         shell: bash
+      - run: cat /d/a/_temp/_runner_file_commands/add_path_*
+        shell: bash
       - run: echo $PATH
         shell: bash
       - run: $Env:Path
