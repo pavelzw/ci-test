@@ -32,11 +32,11 @@ jobs:
         shell: powershell
       - run: |
           set -x
-          cd $HOME
+          cd /c/Users/runneradmin
           mkdir on-path
-          echo "python --version" >> on-path\python-custom
-          chmod +x on-path\python-custom
-          echo "$HOME/on-path" >> $GITHUB_PATH
+          echo "python --version" >> on-path/python-custom
+          chmod +x on-path/python-custom
+          echo "C:\Users\runneradmin\on-path" >> $GITHUB_PATH
           echo $GITHUB_PATH
           cat $GITHUB_PATH
         shell: bash
@@ -54,8 +54,8 @@ jobs:
           echo $GITHUB_PATH
           cat $GITHUB_PATH
         shell: bash
-      - run: python-custom
-        shell: bash
+      # - run: python-custom
+      #   shell: bash
       - run: test
         shell: python-custom
       - run: echo "$HOME/.local/bin" >> $GITHUB_PATH
