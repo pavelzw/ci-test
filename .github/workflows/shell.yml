@@ -34,6 +34,7 @@ jobs:
           echo "python --version" >> on-path\python-custom
           chmod +x on-path\python-custom
           echo "$HOME/on-path" >> $GITHUB_PATH
+        shell: bash
       - run: python-custom
         shell: bash
       - run: test
