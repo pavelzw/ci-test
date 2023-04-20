@@ -40,6 +40,11 @@ jobs:
       - run: $Env:Path
         shell: powershell
       - run: $Env:GITHUB_PATH
+      - run: |
+          set -x
+          echo $GITHUB_PATH
+          cat $GITHUB_PATH
+        shell: bash
       - run: python-custom
         shell: bash
       - run: test
