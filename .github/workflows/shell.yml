@@ -48,12 +48,9 @@ jobs:
         shell: bash
       - run: $Env:Path
         shell: powershell
-      - run: $Env:GITHUB_PATH
       - run: |
-          set -x
-          echo $GITHUB_PATH
-          cat $GITHUB_PATH
-        shell: bash
+          cd C:\Users\runneradmin\on-path
+          ls
       # - run: python-custom
       #   shell: bash
       - run: test
