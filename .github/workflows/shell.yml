@@ -18,15 +18,17 @@ jobs:
   test-win:
     runs-on: windows-latest
     steps:
-      - run: |
-          echo "Hello, world!"
-      - run: echo $PATH
+      - name: $PATH bash
+        run: echo $PATH
         shell: bash
-      - run: echo %PATH%
+      - name: \%PATH% CMD
+        run: echo %PATH%
         shell: cmd
-      - run: $Env:Path
+      - name: $Env:Path Powershell
+        run: $Env:Path
         shell: powershell
-      - run: $Env:GITHUB_PATH
+      - name: $Env:GITHUB_PATH Powershell
+        run: $Env:GITHUB_PATH
         shell: powershell
       - run: |
           set -x
