@@ -25,5 +25,6 @@ jobs:
       - uses: mamba-org/setup-micromamba@v1
         with:
           environment-file: 'test/environment.yml'
-      - run: micromamba info | grep -q "environment : env-name"
+      - run: |
+          micromamba info | grep -q "environment : env-name"
         shell: bash -el {0}
