@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push
+
+jobs:
+  no-environment-file:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-name: test
+          create-args: >-
+            python
+            cython
+      - run: |
+          micromamba info | grep -q "environment : test"
+        shell: bash -el {0}
+
+  environment-file:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-file: 'test/environment.yml'
+      - run: micromamba info | grep -q "environment : env-name"
+        shell: bash -el {0}
