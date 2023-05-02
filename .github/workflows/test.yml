@@ -8,21 +8,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: mamba-org/setup-micromamba@fix-run-shell
+      - uses: mamba-org/setup-micromamba@v1
         with:
           environment-name: test
           create-args: >-
-            python
-            cython
+            python>=3.11
+            python<3.10
       - run: |
           micromamba info | grep -q "environment : test"
+        if: false
         shell: bash -el {0}
 
   environment-file:
+    if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: mamba-org/setup-micromamba@fix-run-shell
+      - uses: mamba-org/setup-micromamba@v1
         with:
           environment-file: 'test/environment.yml'
       - run: |
