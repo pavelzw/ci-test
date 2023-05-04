@@ -14,3 +14,4 @@ jobs:
       - run: echo "$GITHUB_ENV"
       - uses: mxschmitt/action-tmate@v3
       - run: echo "$SOME_VAR"
+      - uses: mxschmitt/action-tmate@v3
