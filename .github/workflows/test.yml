@@ -1,0 +1,15 @@
+name: CI
+
+on:
+  push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "SOME_VAR=some-value" >> "$GITHUB_ENV"
+          echo "Added SOME_VAR to $GITHUB_ENV"
+      - run: echo "$SOME_VAR"
+      - run: echo "$GITHUB_ENV"
+      - uses: mxschmitt/action-tmate@v3
