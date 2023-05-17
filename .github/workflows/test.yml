@@ -1,0 +1,14 @@
+name: CI
+
+on:
+  push
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - run: echo "echo '.bash_profile sourced'" >> ~/.bash_profile
+      - run: echo "Hello World"
+        shell: bash -el {0}
+      - run: echo "Hello World"
+        shell: bash -eul {0}
