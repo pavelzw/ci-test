@@ -1,4 +1,4 @@
-name: Release if version changed
+name: Test version-metadata
 
 on: [push]
 
