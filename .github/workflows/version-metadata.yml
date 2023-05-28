@@ -1,10 +1,6 @@
 name: Release if version changed
 
-on:
-  push:
-    branches: main
-permissions:
-  contents: write
+on: [push]
 
 # To release a new version, update the version in package.json.
 # This will create a draft release with the changelog and push a 'vx' tag that points to the new release as well as 'vx.y.z'.
@@ -16,8 +12,8 @@ jobs:
       - uses: pavelzw/ui-actions/version-metadata@custom-extractor
         id: version-metadata
         with:
-          file: ./version.txt
-          extractor: 'read_version.sh'
+          file: ./version.py
+          extractor: ./read_version.sh
           token: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           echo "Version changed: ${{ steps.version-metadata.outputs.changed }}"
