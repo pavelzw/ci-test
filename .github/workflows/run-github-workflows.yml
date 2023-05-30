@@ -27,6 +27,7 @@ jobs:
         environment-file: environment.yml
         environment-name: ${{ runner.os }}
     - run: which conda
+    - uses: mxschmitt/action-tmate@v3
     - name: export conda environment created using micromamba
       run: |
         micromamba env export --name ${{ runner.os }} | grep -v "^prefix: " > ./environments/${{ runner.os }}_solved.yml
