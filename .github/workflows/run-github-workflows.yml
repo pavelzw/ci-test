@@ -31,6 +31,6 @@ jobs:
       run: |
         micromamba env export --name ${{ runner.os }} | grep -v "^prefix: " > ./environments/${{ runner.os }}_solved.yml
         conda list --explicit > ./environments/csp_${{ runner.os }}_solved.txt
-        conda env export --name ${{ runner.os }} > ./environments/${{ runner.os }}_solved_with_pip.yml
+        conda env export -p "${MAMBA_ROOT_PREFIX}/${{ runner.os }}" > ./environments/${{ runner.os }}_solved_with_pip.yml
     - name: add and commit exported conda environment
       uses: stefanzweifel/git-auto-commit-action@v4
