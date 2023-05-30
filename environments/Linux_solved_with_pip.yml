@@ -1,0 +1,4 @@
+name: Linux
+channels:
+  - conda-forge
+prefix: /usr/share/miniconda/envs/Linux
