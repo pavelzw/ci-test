@@ -25,7 +25,7 @@ jobs:
         id: version-metadata
         with:
           file: ./version.yml
-          versionExtractionOverride: 'regex:version: (.*)$'
+          versionExtractionOverride: 'regex:version: (.*)'
           token: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           echo "Version changed: ${{ steps.version-metadata.outputs.changed }}"
