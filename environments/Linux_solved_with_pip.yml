@@ -1,4 +1,4 @@
-name: Linux
+name: /home/runner/micromamba/Linux
 channels:
   - conda-forge
-prefix: /usr/share/miniconda/envs/Linux
+prefix: /home/runner/micromamba/Linux
