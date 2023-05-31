@@ -7,11 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: pavelzw/ui-actions/version-metadata@custom-extractor
+      - uses: quantco/ui-actions/version-metadata@v1
         id: version-metadata
         with:
           file: ./version.py
-          versionExtractionOverride: 'command:./read_version.sh'
+          version-extraction-override: 'command:./read_version.sh'
           token: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           echo "Version changed: ${{ steps.version-metadata.outputs.changed }}"
