@@ -21,11 +21,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: pavelzw/ui-actions/version-metadata@custom-extractor
+      - uses: quantco/ui-actions/version-metadata@v1
+      # - uses: pavelzw/ui-actions/version-metadata@custom-extractor
         id: version-metadata
         with:
           file: ./version.yml
-          versionExtractionOverride: 'regex:version: (.*)'
+          version-extraction-override: 'regex:version: (.*)'
           token: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           echo "Version changed: ${{ steps.version-metadata.outputs.changed }}"
