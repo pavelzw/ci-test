@@ -15,4 +15,4 @@ jobs:
       #     # create-args: python=3.7 pypy pip
       - run: |
           echo hello world
-        shell: cat {0}
+        shell: ls -l {0}
