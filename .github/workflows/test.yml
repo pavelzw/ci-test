@@ -12,3 +12,4 @@ jobs:
           tmp="$(mktemp)"
           echo "print('hello world')" > "$tmp"
           pixi run python -c "$tmp"
+        shell: bash
