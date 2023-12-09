@@ -5,14 +5,12 @@ on:
 
 jobs:
   test:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: mamba-org/setup-micromamba@v1
         with:
           environment-name: test
           create-args: rattler-build=0.6.0
-          init-shell: cmd.exe bash powershell
-      - run: rattler-build build -r conda.recipe/recipe.yaml 
-        shell: powershell
-        # shell: bash -el {0}
+      - run: rattler-build build -r conda.recipe/recipe.yaml -m conda.recipe/variants-linux-aarch64.yaml --target-platform=linux-aarch64
+        shell: bash -el {0}
