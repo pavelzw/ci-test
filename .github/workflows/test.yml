@@ -11,6 +11,6 @@ jobs:
       - uses: mamba-org/setup-micromamba@v1
         with:
           environment-name: test
-          create-args: rattler-build=0.5.2
-      - run: rattler-build build -r conda.recipe/recipe.yaml -m conda.recipe/variants-linux-aarch64.yaml --target-platform=linux-aarch64 --no-test
+          create-args: rattler-build=0.6.0
+      - run: rattler-build build -r conda.recipe/recipe.yaml --target-platform=linux-aarch64 --no-test
         shell: bash -el {0}
