@@ -15,5 +15,5 @@ jobs:
         with:
           environment-name: test
           create-args: rattler-build=0.6.2rc1 -c conda-forge/label/rattler-build_rc -c conda-forge
-      - run: rattler-build build -r conda.recipe/recipe.yaml --target-platform=linux-aarch64
+      - run: rattler-build build -r conda.recipe/recipe.yaml
         shell: bash -el {0}
