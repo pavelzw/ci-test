@@ -28,6 +28,7 @@ jobs:
       - name: Set up pixi
         uses: prefix-dev/setup-pixi@0f64e482e3d251f735019b1bc7fb0413ead75b2c # v0.8.2
       - name: Install repository
+        shell: bash
         run: |
           ls -lah
           pixi run echo hello
