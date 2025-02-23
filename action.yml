@@ -5,21 +5,47 @@ branding:
   icon: code
   color: blue
 inputs:
-  abc:
-    description: abc
-    required: false
-    default: ''
   ngrok-token:
     description: ngrok token
     required: true
-  vscode-password:
-    description: password for VSCode server
-    required: true
+  basic-auth:
+    description: Basic auth credentials (username:password)
+    required: false
+  oauth-github-email:
+    description: Allowed email for GitHub OAuth
+    required: false
+  oauth-google-email:
+    description: Allowed email for Google OAuth
+    required: false
 runs:
   using: composite
   steps:
-    # - name: Download pixi
-    #   uses: prefix-dev/setup-pixi@v0.8.3
+    - name: Generate CLI arguments
+      id: ngrok-args
+      shell: bash
+      run: |
+        if [ -z ${{ inputs.ngrok-token }} ]
+        then
+          echo "ngrok-token is required"
+          exit 1
+        fi
+        if [ ! -z '${{ inputs.oauth-github-email }}' ]
+        then
+          echo ngrok-args=' --oauth=github --oauth-allow-email=${{ inputs.oauth-github-email }}' >> $GITHUB_OUTPUT
+        elif [ ! -z '${{ inputs.oauth-google-email }}' ]
+        then
+          echo ngrok-args=' --oauth=google --oauth-allow-email=${{ inputs.oauth-google-email }}' >> $GITHUB_OUTPUT
+        elif [ ! -z '${{ inputs.basic-auth }}' ]
+        then
+          echo ngrok-args=' --basic-auth=${{ inputs.basic-auth }}' >> $GITHUB_OUTPUT
+        else
+          echo 'No authentication method specified'
+          echo 'Please provide one of the following:'
+          echo '  - oauth-github-email'
+          echo '  - oauth-google-email'
+          echo '  - basic-auth'
+          exit 1
+        fi
     - name: Install code-server
       shell: bash
       # https://coder.com/docs/code-server/install#installsh
@@ -35,19 +61,15 @@ runs:
           | sudo tee /etc/apt/sources.list.d/ngrok.list
         sudo apt update
         sudo apt install ngrok
-    # - name: Configure ngrok
-    #   shell: bash
-    #   run: |
-    #     ngrok config add-authtoken ${{ inputs.ngrok-token }}
-    - name: Start ngrok and VSCode Server
+    - name: Start ngrok and VSCode Server (unix)
       shell: bash
       env:
-        PASSWORD: ${{ inputs.vscode-password }}
         NGROK_AUTHTOKEN: ${{ inputs.ngrok-token }}
       run: |
         set -euo pipefail
         echo ================================ Starting code-server ================================
         code-server \
+            --auth none \
             --disable-telemetry \
             --disable-update-check \
             --bind-addr 0.0.0.0:8080 \
@@ -55,24 +77,19 @@ runs:
         code_server_pid=$!
         sleep 5
         echo ================================ Starting ngrok server ================================
-        ngrok http 8080 &
+        ngrok http 8080${{ steps.ngrok-args.outputs.ngrok-args }} &
         ngrok_pid=$!
         echo started ngrok with PID: $ngrok_pid
 
-        echo Sleeping for 10 seconds
+        echo Waiting for ngrok to start...
         sleep 10
         # https://stackoverflow.com/a/45222497
         ngrok_url="$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')"
-        echo $ngrok_url
 
         # while 'finished' file is not present
         while [ ! -f finished ]; do
-          sleep 5
           echo $ngrok_url
+          sleep 5
         done
         echo Stopping server because the \`finished\` file was found
         kill $code_server_pid $ngrok_pid
-    - name: Temp
-      shell: bash
-      id: url
-      run: echo hello
