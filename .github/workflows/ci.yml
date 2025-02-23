@@ -6,5 +6,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - uses: mxschmitt/action-tmate@v3
+      # - uses: mxschmitt/action-tmate@v3
       - uses: ./
+        with:
+          ngrok-token: ${{ secrets.NGROK_TOKEN }}
+          vscode-password: ${{ secrets.VSCODE_PASSWORD }}

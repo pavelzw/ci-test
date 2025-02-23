@@ -9,11 +9,48 @@ inputs:
     description: abc
     required: false
     default: ''
+  ngrok-token:
+    description: ngrok token
+    required: true
+  vscode-password:
+    description: password for VSCode server
+    required: true
 runs:
   using: composite
   steps:
-    - name: Download pixi
-      uses: prefix-dev/setup-pixi@v0.8.3
+    # - name: Download pixi
+    #   uses: prefix-dev/setup-pixi@v0.8.3
+    - name: Install code-server
+      shell: bash
+      # https://coder.com/docs/code-server/install#installsh
+      run: |
+        curl -fsSL https://code-server.dev/install.sh | sh
+    - name: Install ngrok
+      shell: bash
+      # https://ngrok.com/downloads/linux
+      run: |
+        curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc \
+          | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
+        echo "deb https://ngrok-agent.s3.amazonaws.com buster main" \
+          | sudo tee /etc/apt/sources.list.d/ngrok.list
+        sudo apt update
+        sudo apt install ngrok
+    - name: Configure ngrok
+      shell: bash
+      run: |
+        ngrok config add-authtoken ${{ inputs.ngrok-token }}
+    - name: Start ngrok and VSCode Server
+      shell: bash
+      run: |
+        code-server --password ${{ inputs.vscode-password }} \
+            --disable-telemetry \
+            --disable-update-check \
+            --bind-addr 0.0.0.0:8080 \
+            ./ &
+        sleep 5
+        echo starting ngrok server
+        ngrok http 8080 &
+
     - name: Temp
       shell: bash
       id: url
