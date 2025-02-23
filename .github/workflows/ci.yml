@@ -15,5 +15,6 @@ jobs:
       - uses: ./
         with:
           ngrok-token: ${{ secrets.NGROK_TOKEN }}
-          vscode-password: ${{ secrets.VSCODE_PASSWORD }}
+          oauth-github-email: abc@def.com
+
       # - uses: mxschmitt/action-tmate@v3
