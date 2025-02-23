@@ -53,11 +53,15 @@ runs:
         echo starting ngrok server
         ngrok http 8080 &
 
+        # https://stackoverflow.com/a/45222497
+        ngrok_url="$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')"
+        echo $ngrok_url
+
         n=0
         while [ $n -lt 100 ]; do
           sleep 1
           n=$((n+1))
-          echo $n
+          echo $ngrok_url
         done
     - name: Temp
       shell: bash
