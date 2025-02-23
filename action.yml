@@ -44,7 +44,7 @@ runs:
       env:
         PASSWORD: ${{ inputs.vscode-password }}
       run: |
-        code-server --password \
+        code-server \
             --disable-telemetry \
             --disable-update-check \
             --bind-addr 0.0.0.0:8080 \
