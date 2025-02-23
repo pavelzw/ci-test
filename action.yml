@@ -51,16 +51,16 @@ runs:
     #   # https://coder.com/docs/code-server/install#installsh
     #   run: |
     #     curl -fsSL https://code-server.dev/install.sh | sh
-    # - name: Install ngrok
-    #   shell: bash
-    #   # https://ngrok.com/downloads/linux
-    #   run: |
-    #     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc \
-    #       | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
-    #     echo "deb https://ngrok-agent.s3.amazonaws.com buster main" \
-    #       | sudo tee /etc/apt/sources.list.d/ngrok.list
-    #     sudo apt update
-    #     sudo apt install ngrok
+    - name: Install ngrok
+      shell: bash
+      # https://ngrok.com/downloads/linux
+      run: |
+        curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc \
+          | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
+        echo "deb https://ngrok-agent.s3.amazonaws.com buster main" \
+          | sudo tee /etc/apt/sources.list.d/ngrok.list
+        sudo apt update
+        sudo apt install ngrok
     # - name: Start ngrok and VSCode Server (unix)
     #   shell: bash
     #   env:
@@ -94,11 +94,43 @@ runs:
     #     echo Stopping server because the \`finished\` file was found
     #     kill $code_server_pid $ngrok_pid
 
-    - name: Install VSCode
+    # - name: Install VSCode
+    #   shell: bash
+    #   run: |
+    #     curl -Ls 'https://go.microsoft.com/fwlink/?LinkID=760868' > vscode.deb
+    #     sudo apt install ./vscode.deb
+    - name: Add SSH keys
       shell: bash
       run: |
-        curl -Ls 'https://go.microsoft.com/fwlink/?LinkID=760868' > vscode.deb
-        sudo apt install ./vscode.deb
+        mkdir -p ~/.ssh
+        chmod 700 ~/.ssh
+        curl -Ls https://github.com/${{ github.actor }}.keys > ~/.ssh/authorized_keys
+        chmod 600 ~/.ssh/authorized_keys
+    - name: Start SSH server
+      shell: bash
+      run: |
+        sudo service ssh start
+    - name: Start ngrok server
+      shell: bash
+      run: |
+        echo ================================ Starting ngrok server ================================
+        ngrok tcp 22 &
+        ngrok_pid=$!
+        echo started ngrok with PID: $ngrok_pid
+
+        echo Waiting for ngrok to start...
+        sleep 10
+        # https://stackoverflow.com/a/45222497
+        ngrok_url="$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')"
+
+        # while 'finished' file is not present
+        while [ ! -f finished ]; do
+          echo $ngrok_url
+          sleep 5
+        done
+        echo Stopping server because the \`finished\` file was found
+        kill $ngrok_pid
+
     - uses: mxschmitt/action-tmate@v3
     - name: Run VSCode
       shell: bash
