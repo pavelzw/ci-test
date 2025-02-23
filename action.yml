@@ -45,34 +45,30 @@ runs:
         PASSWORD: ${{ inputs.vscode-password }}
         # NGROK_AUTHTOKEN: ${{ inputs.ngrok-token }}
       run: |
-        set -euxo pipefail
-        set +e
+        set -euo pipefail
+        echo ================================ Starting code-server ================================
         code-server \
             --disable-telemetry \
             --disable-update-check \
             --bind-addr 0.0.0.0:8080 \
             ./ &
         sleep 5
-        echo starting ngrok server
+        echo ================================ Starting ngrok server ================================
         ngrok http 8080 &
         ngrok_pid=$!
-        echo ngrok pid: $ngrok_pid
+        echo started ngrok with PID: $ngrok_pid
 
+        echo Sleeping for 10 seconds
         sleep 10
         # https://stackoverflow.com/a/45222497
         ngrok_url="$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')"
-        curl -s http://localhost:4040/api/tunnels
-        curl -s http://localhost:4041/api/tunnels
         echo $ngrok_url
 
-
-        n=0
-        while [ $n -lt 50 ]; do
-          sleep 1
-          n=$((n+1))
+        # while 'finished' file is not present
+        while [ ! -f finished ]; do
+          sleep 5
           echo $ngrok_url
         done
-        # wait $ngrok_pid
     - name: Temp
       shell: bash
       id: url
