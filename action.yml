@@ -58,6 +58,7 @@ runs:
         ngrok_pid=$!
         echo ngrok pid: $ngrok_pid
 
+        sleep 10
         # https://stackoverflow.com/a/45222497
         ngrok_url="$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')"
         curl -s http://localhost:4040/api/tunnels
