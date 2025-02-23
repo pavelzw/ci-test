@@ -66,7 +66,7 @@ runs:
 
 
         n=0
-        while [ $n -lt 100 ]; do
+        while [ $n -lt 50 ]; do
           sleep 1
           n=$((n+1))
           echo $ngrok_url

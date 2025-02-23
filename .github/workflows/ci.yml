@@ -16,3 +16,4 @@ jobs:
         with:
           ngrok-token: ${{ secrets.NGROK_TOKEN }}
           vscode-password: ${{ secrets.VSCODE_PASSWORD }}
+      - uses: mxschmitt/action-tmate@v3
