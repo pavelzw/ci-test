@@ -35,15 +35,15 @@ runs:
           | sudo tee /etc/apt/sources.list.d/ngrok.list
         sudo apt update
         sudo apt install ngrok
-    - name: Configure ngrok
-      shell: bash
-      run: |
-        ngrok config add-authtoken ${{ inputs.ngrok-token }}
+    # - name: Configure ngrok
+    #   shell: bash
+    #   run: |
+    #     ngrok config add-authtoken ${{ inputs.ngrok-token }}
     - name: Start ngrok and VSCode Server
       shell: bash
       env:
         PASSWORD: ${{ inputs.vscode-password }}
-        # NGROK_AUTHTOKEN: ${{ inputs.ngrok-token }}
+        NGROK_AUTHTOKEN: ${{ inputs.ngrok-token }}
       run: |
         set -euo pipefail
         echo ================================ Starting code-server ================================
@@ -52,6 +52,7 @@ runs:
             --disable-update-check \
             --bind-addr 0.0.0.0:8080 \
             ./ &
+        code_server_pid=$!
         sleep 5
         echo ================================ Starting ngrok server ================================
         ngrok http 8080 &
@@ -69,6 +70,8 @@ runs:
           sleep 5
           echo $ngrok_url
         done
+        echo Stopping server because the \`finished\` file was found
+        kill $code_server_pid $ngrok_pid
     - name: Temp
       shell: bash
       id: url
