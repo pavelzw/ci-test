@@ -12,12 +12,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       # - uses: mxschmitt/action-tmate@v3
-      # - uses: ./
-      #   with:
-      #     ngrok-token: ${{ secrets.NGROK_TOKEN }}
-      #     oauth-github-email: pavelzw@gmail.com
-      - name: 🐛 Debug Build
-        uses: stateful/vscode-server-action@v1
+      - uses: ./
+        with:
+          ngrok-token: ${{ secrets.NGROK_TOKEN }}
+          oauth-github-email: pavelzw@gmail.com
+      # - name: 🐛 Debug Build
+      #   uses: stateful/vscode-server-action@v1
 
 
       # - uses: mxschmitt/action-tmate@v3

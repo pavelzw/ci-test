@@ -20,76 +20,88 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Generate CLI arguments
-      id: ngrok-args
-      shell: bash
-      run: |
-        if [ -z ${{ inputs.ngrok-token }} ]
-        then
-          echo "ngrok-token is required"
-          exit 1
-        fi
-        if [ ! -z '${{ inputs.oauth-github-email }}' ]
-        then
-          echo ngrok-args=' --oauth=github --oauth-allow-email=${{ inputs.oauth-github-email }}' >> $GITHUB_OUTPUT
-        elif [ ! -z '${{ inputs.oauth-google-email }}' ]
-        then
-          echo ngrok-args=' --oauth=google --oauth-allow-email=${{ inputs.oauth-google-email }}' >> $GITHUB_OUTPUT
-        elif [ ! -z '${{ inputs.basic-auth }}' ]
-        then
-          echo ngrok-args=' --basic-auth=${{ inputs.basic-auth }}' >> $GITHUB_OUTPUT
-        else
-          echo 'No authentication method specified'
-          echo 'Please provide one of the following:'
-          echo '  - oauth-github-email'
-          echo '  - oauth-google-email'
-          echo '  - basic-auth'
-          exit 1
-        fi
-    - name: Install code-server
-      shell: bash
-      # https://coder.com/docs/code-server/install#installsh
-      run: |
-        curl -fsSL https://code-server.dev/install.sh | sh
-    - name: Install ngrok
-      shell: bash
-      # https://ngrok.com/downloads/linux
-      run: |
-        curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc \
-          | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
-        echo "deb https://ngrok-agent.s3.amazonaws.com buster main" \
-          | sudo tee /etc/apt/sources.list.d/ngrok.list
-        sudo apt update
-        sudo apt install ngrok
-    - name: Start ngrok and VSCode Server (unix)
-      shell: bash
-      env:
-        NGROK_AUTHTOKEN: ${{ inputs.ngrok-token }}
-      run: |
-        set -euo pipefail
-        echo ================================ Starting code-server ================================
-        code-server \
-            --auth none \
-            --disable-telemetry \
-            --disable-update-check \
-            --bind-addr 0.0.0.0:8080 \
-            ./ &
-        code_server_pid=$!
-        sleep 5
-        echo ================================ Starting ngrok server ================================
-        ngrok http 8080${{ steps.ngrok-args.outputs.ngrok-args }} &
-        ngrok_pid=$!
-        echo started ngrok with PID: $ngrok_pid
+    # - name: Generate CLI arguments
+    #   id: ngrok-args
+    #   shell: bash
+    #   run: |
+    #     if [ -z ${{ inputs.ngrok-token }} ]
+    #     then
+    #       echo "ngrok-token is required"
+    #       exit 1
+    #     fi
+    #     if [ ! -z '${{ inputs.oauth-github-email }}' ]
+    #     then
+    #       echo ngrok-args=' --oauth=github --oauth-allow-email=${{ inputs.oauth-github-email }}' >> $GITHUB_OUTPUT
+    #     elif [ ! -z '${{ inputs.oauth-google-email }}' ]
+    #     then
+    #       echo ngrok-args=' --oauth=google --oauth-allow-email=${{ inputs.oauth-google-email }}' >> $GITHUB_OUTPUT
+    #     elif [ ! -z '${{ inputs.basic-auth }}' ]
+    #     then
+    #       echo ngrok-args=' --basic-auth=${{ inputs.basic-auth }}' >> $GITHUB_OUTPUT
+    #     else
+    #       echo 'No authentication method specified'
+    #       echo 'Please provide one of the following:'
+    #       echo '  - oauth-github-email'
+    #       echo '  - oauth-google-email'
+    #       echo '  - basic-auth'
+    #       exit 1
+    #     fi
+    # - name: Install code-server
+    #   shell: bash
+    #   # https://coder.com/docs/code-server/install#installsh
+    #   run: |
+    #     curl -fsSL https://code-server.dev/install.sh | sh
+    # - name: Install ngrok
+    #   shell: bash
+    #   # https://ngrok.com/downloads/linux
+    #   run: |
+    #     curl -sSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc \
+    #       | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
+    #     echo "deb https://ngrok-agent.s3.amazonaws.com buster main" \
+    #       | sudo tee /etc/apt/sources.list.d/ngrok.list
+    #     sudo apt update
+    #     sudo apt install ngrok
+    # - name: Start ngrok and VSCode Server (unix)
+    #   shell: bash
+    #   env:
+    #     NGROK_AUTHTOKEN: ${{ inputs.ngrok-token }}
+    #   run: |
+    #     set -euo pipefail
+    #     echo ================================ Starting code-server ================================
+    #     code-server \
+    #         --auth none \
+    #         --disable-telemetry \
+    #         --disable-update-check \
+    #         --bind-addr 0.0.0.0:8080 \
+    #         ./ &
+    #     code_server_pid=$!
+    #     sleep 5
+    #     echo ================================ Starting ngrok server ================================
+    #     ngrok http 8080${{ steps.ngrok-args.outputs.ngrok-args }} &
+    #     ngrok_pid=$!
+    #     echo started ngrok with PID: $ngrok_pid
 
-        echo Waiting for ngrok to start...
-        sleep 10
-        # https://stackoverflow.com/a/45222497
-        ngrok_url="$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')"
+    #     echo Waiting for ngrok to start...
+    #     sleep 10
+    #     # https://stackoverflow.com/a/45222497
+    #     ngrok_url="$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')"
 
-        # while 'finished' file is not present
-        while [ ! -f finished ]; do
-          echo $ngrok_url
-          sleep 5
-        done
-        echo Stopping server because the \`finished\` file was found
-        kill $code_server_pid $ngrok_pid
+    #     # while 'finished' file is not present
+    #     while [ ! -f finished ]; do
+    #       echo $ngrok_url
+    #       sleep 5
+    #     done
+    #     echo Stopping server because the \`finished\` file was found
+    #     kill $code_server_pid $ngrok_pid
+
+    - name: Install VSCode
+      shell: bash
+      run: |
+        curl -Ls 'https://go.microsoft.com/fwlink/?LinkID=760868' > vscode.deb
+        sudo apt install ./vscode.deb
+    - uses: mxschmitt/action-tmate@v3
+    - name: Run VSCode
+      shell: bash
+      run: |
+        echo hello
+        code tunnel
