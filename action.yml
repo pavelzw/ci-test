@@ -35,15 +35,15 @@ runs:
           | sudo tee /etc/apt/sources.list.d/ngrok.list
         sudo apt update
         sudo apt install ngrok
-    # - name: Configure ngrok
-    #   shell: bash
-    #   run: |
-    #     ngrok config add-authtoken ${{ inputs.ngrok-token }}
+    - name: Configure ngrok
+      shell: bash
+      run: |
+        ngrok config add-authtoken ${{ inputs.ngrok-token }}
     - name: Start ngrok and VSCode Server
       shell: bash
       env:
         PASSWORD: ${{ inputs.vscode-password }}
-        NGROK_AUTHTOKEN: ${{ inputs.ngrok-token }}
+        # NGROK_AUTHTOKEN: ${{ inputs.ngrok-token }}
       run: |
         set -euxo pipefail
         set +e
