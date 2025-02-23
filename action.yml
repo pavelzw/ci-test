@@ -35,14 +35,15 @@ runs:
           | sudo tee /etc/apt/sources.list.d/ngrok.list
         sudo apt update
         sudo apt install ngrok
-    - name: Configure ngrok
-      shell: bash
-      run: |
-        ngrok config add-authtoken ${{ inputs.ngrok-token }}
+    # - name: Configure ngrok
+    #   shell: bash
+    #   run: |
+    #     ngrok config add-authtoken ${{ inputs.ngrok-token }}
     - name: Start ngrok and VSCode Server
       shell: bash
       env:
         PASSWORD: ${{ inputs.vscode-password }}
+        NGROK_AUTHTOKEN: ${{ inputs.ngrok-token }}
       run: |
         code-server \
             --disable-telemetry \
@@ -51,7 +52,7 @@ runs:
             ./ &
         sleep 5
         echo starting ngrok server
-        ngrok http 8080 &
+        ngrok http 8080
 
         # https://stackoverflow.com/a/45222497
         ngrok_url="$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')"
