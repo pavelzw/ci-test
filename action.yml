@@ -112,6 +112,8 @@ runs:
         sudo service ssh start
     - name: Start ngrok server
       shell: bash
+      env:
+        NGROK_AUTHTOKEN: ${{ inputs.ngrok-token }}
       run: |
         echo ================================ Starting ngrok server ================================
         ngrok tcp 22 &
