@@ -15,6 +15,6 @@ jobs:
       - uses: ./
         with:
           ngrok-token: ${{ secrets.NGROK_TOKEN }}
-          oauth-github-email: abc@def.com
+          oauth-github-email: pavelzw@gmail.com
 
       # - uses: mxschmitt/action-tmate@v3
