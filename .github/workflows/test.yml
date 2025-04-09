@@ -14,4 +14,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: env | sort
-      - run: cat $GITHUB_STATE
+      - run: echo ${{github.job]}
