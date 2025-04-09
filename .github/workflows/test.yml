@@ -15,5 +15,5 @@ jobs:
       - uses: actions/checkout@v4
       - run: env | sort
       - run: echo ${{github.job}}
-      - run: echo ${{ github }}
-      - run: echo ${{ toJson(github) }}
+      - run: echo '${{ github }}'
+      - run: echo '${{ toJson(github) }}'
