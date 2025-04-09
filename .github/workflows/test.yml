@@ -16,3 +16,4 @@ jobs:
       - run: env | sort
       - run: echo ${{github.job]}
       - run: echo ${{ github }}
+      - run: echo ${{ toJson(github) }}
