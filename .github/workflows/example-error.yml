@@ -9,4 +9,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Emit test error
-        run: echo '::error:: test error' >&2
+        run: |
+          echo '::error:: test error' >&2
